@@ -7,6 +7,7 @@ interface AuthContextType {
     token: string | null;
     isAuthenticated: boolean;
     isAdmin: boolean;
+    isLoading: boolean;
     login: (token: string) => void;
     logout: () => void;
 }
@@ -15,6 +16,7 @@ const AuthContext = createContext<AuthContextType>({
     token: null,
     isAuthenticated: false,
     isAdmin: false,
+    isLoading: true,
     login: () => {},
     logout: () => {},
 });
@@ -28,6 +30,7 @@ interface JwtPayload {
 export function AuthProvider({ children }: { children: React.ReactNode }) {
     const [token, setToken] = useState<string | null>(null);
     const [isAdmin, setIsAdmin] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const router = useRouter();
 
     const decodeToken = (token: string) => {
@@ -40,6 +43,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             console.error('Error decoding token:', error);
             return null;
         }
+    };
+
+    const isTokenExpired = (token: string): boolean => {
+        const payload = decodeToken(token);
+        if (!payload) return true;
+        return payload.exp * 1000 < Date.now();
     };
 
     const processToken = (newToken: string | null) => {
@@ -57,10 +66,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     useEffect(() => {
         // Check for token in localStorage on mount
         const storedToken = localStorage.getItem('token');
-        if (storedToken) {
+        if (storedToken && !isTokenExpired(storedToken)) {
             setToken(storedToken);
             processToken(storedToken);
+        } else if (storedToken) {
+            // Token exists but is expired
+            localStorage.removeItem('token');
         }
+        setIsLoading(false);
     }, []);
 
     const login = (newToken: string) => {
@@ -88,6 +101,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             token,
             isAuthenticated: !!token,
             isAdmin,
+            isLoading,
             login,
             logout,
         }}>

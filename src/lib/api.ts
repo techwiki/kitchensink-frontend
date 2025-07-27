@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Member, MemberInput } from '@/types/member';
+import { Member, MemberInput, Role } from '@/types/member';
 import { encryptPassword } from './encryption';
 
 const api = axios.create({
@@ -81,6 +81,11 @@ export const memberApi = {
 
     update: async (id: string, member: MemberInput): Promise<Member> => {
         const response = await api.put(`/members/${id}`, member);
+        return response.data;
+    },
+
+    updateRole: async (id: string, role: Role): Promise<Member> => {
+        const response = await api.patch(`/members/${id}/role`, { role });
         return response.data;
     },
 

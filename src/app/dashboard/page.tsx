@@ -6,16 +6,24 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 export default function DashboardPage() {
-    const { isAuthenticated, isAdmin } = useAuth();
+    const { isAuthenticated, isAdmin, isLoading } = useAuth();
     const router = useRouter();
 
     useEffect(() => {
-        if (!isAuthenticated) {
+        if (!isLoading && !isAuthenticated) {
             router.push('/login');
-        } else if (isAdmin) {
+        } else if (!isLoading && isAdmin) {
             router.push('/admin/dashboard');
         }
-    }, [isAuthenticated, isAdmin, router]);
+    }, [isAuthenticated, isAdmin, isLoading, router]);
+
+    if (isLoading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+            </div>
+        );
+    }
 
     if (!isAuthenticated || isAdmin) {
         return null; // Will redirect in useEffect
