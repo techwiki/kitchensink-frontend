@@ -36,23 +36,25 @@ export const authApi = {
     },
 
     login: async (data: LoginRequest): Promise<AuthResponse> => {
-        // TEMPORARY: Skip encryption for debugging
-        console.log('Attempting login without encryption (temporary)');
+        // Get public key and encrypt password
+        const publicKey = await authApi.getPublicKey();
+        const encryptedPassword = await encryptPassword(data.password, publicKey);
         
         const response = await api.post('/auth/login', {
-            ...data,
-            password: data.password // Send plain password temporarily
+            email: data.email,
+            password: encryptedPassword
         });
         return response.data;
     },
 
     register: async (data: RegisterRequest): Promise<AuthResponse> => {
-        // TEMPORARY: Skip encryption for debugging
-        console.log('Attempting registration without encryption (temporary)');
+        // Get public key and encrypt password
+        const publicKey = await authApi.getPublicKey();
+        const encryptedPassword = await encryptPassword(data.password, publicKey);
         
         const response = await api.post('/auth/register', {
             ...data,
-            password: data.password // Send plain password temporarily
+            password: encryptedPassword
         });
         return response.data;
     }
