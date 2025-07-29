@@ -3,7 +3,7 @@ import { Member, MemberInput, Role } from '@/types/member';
 import { encryptPassword } from './encryption';
 
 const api = axios.create({
-    baseURL: 'http://localhost:8080/api'
+    baseURL: `${process.env.NEXT_PUBLIC_API_URL}/api`
 });
 
 // Add token to requests if available

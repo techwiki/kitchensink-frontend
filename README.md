@@ -1,36 +1,88 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Kitchensink Frontend
 
-## Getting Started
+This project represents the frontend component of the Kitchensink application, which has been extracted from the original monolithic Kitchensink project. This separation was done to support a more modular and scalable architecture, allowing the backend to serve multiple UI options such as web applications and mobile apps.
 
-First, run the development server:
+## Overview
+
+The Kitchensink Frontend is built using Next.js and provides a modern, responsive web interface for the Kitchensink application. It includes features such as:
+
+- User authentication (login/register)
+- Member management
+- Admin dashboard
+- User dashboard
+- Responsive design
+- Protected routes
+- Form validation
+
+## Prerequisites
+
+Before running this project, ensure you have the following installed:
+
+- Node.js (version 18.0.0 or higher)
+- npm (version 8.0.0 or higher)
+- The Kitchensink Backend service should be running (see kitchensink-backend project)
+
+## Environment Setup
+
+1. Create a `.env.local` file in the project root with the following variables:
+```
+# Backend API URL - This is required for the frontend to communicate with the backend
+# If not set, defaults to http://localhost:8080
+NEXT_PUBLIC_API_URL=http://localhost:8080
+```
+
+This environment variable is used in `src/lib/api.ts` to configure the base URL for all API requests. If you don't set this variable, it will default to 'https://localhost:8080'.
+
+## Installation
+
+1. Navigate to the project directory:
+```bash
+cd kitchensink-frontend
+```
+
+2. Install dependencies:
+```bash
+npm install
+```
+
+## Running the Application
+
+### Development Mode
+
+To run the application in development mode with hot-reload:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The application will be available at `http://localhost:3000`
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Production Build
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+To create a production build:
 
-## Learn More
+```bash
+npm run build
+```
 
-To learn more about Next.js, take a look at the following resources:
+To start the production server:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run start
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Project Structure
 
-## Deploy on Vercel
+- `/src/app` - Next.js pages and routing
+- `/src/components` - Reusable React components
+- `/src/contexts` - React context providers
+- `/src/lib` - Utility functions and API handlers
+- `/src/types` - TypeScript type definitions
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Available Scripts
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `npm run dev` - Start development server
+- `npm run build` - Create production build
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
+- `npm run type-check` - Run TypeScript type checking
