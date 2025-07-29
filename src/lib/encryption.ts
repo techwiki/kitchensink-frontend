@@ -39,8 +39,7 @@ export async function encryptPassword(password: string, publicKeyBase64: string)
         // Convert the encrypted password to base64
         const result = Buffer.from(encryptedPassword).toString('base64');
         console.log('Final encrypted password length:', result.length);
-        console.log('Final encrypted password (first 50 chars):', result.substring(0, 50));
-        
+
         return result;
     } catch (error) {
         console.error('Encryption failed:', error);
